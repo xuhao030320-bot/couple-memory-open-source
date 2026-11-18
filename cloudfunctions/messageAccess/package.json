@@ -1,0 +1,19 @@
+{
+  "name": "message-access",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "@cloudbase/node-sdk": "4.2.1"
+  },
+  "overrides": {
+    "@cloudbase/node-sdk": {
+      "axios": "0.35.0"
+    }
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

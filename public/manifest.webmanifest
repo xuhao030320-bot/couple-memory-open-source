@@ -1,0 +1,18 @@
+{
+  "name": "只此我们 · 私人回忆",
+  "short_name": "只此我们",
+  "description": "只属于两个人的私人回忆空间",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4efe6",
+  "theme_color": "#f4efe6",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

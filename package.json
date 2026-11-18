@@ -1,0 +1,40 @@
+{
+  "name": "couple-memory",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:cloudbase": "node --test cloudfunctions/tests/partnerNotes.test.cjs cloudfunctions/tests/trash-and-retry.test.cjs cloudfunctions/messageAccess/test.js"
+  },
+  "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
+    "@cloudbase/js-sdk": "^3.8.0",
+    "@supabase/supabase-js": "^2.111.0",
+    "@zip.js/zip.js": "2.24.0",
+    "heic2any": "^0.0.4",
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-pageflip": "^2.0.3",
+    "tus-js-client": "4.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.1",
+    "fake-indexeddb": "6.2.6",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4",
+    "vitest": "^4.0.15",
+    "ws": "^8.21.3"
+  }
+}

@@ -1,0 +1,3 @@
+# JWTs are verified inside aiAccess with auth.getUser; this supports current JWT signing keys.
+[functions.aiAccess]
+verify_jwt = false
