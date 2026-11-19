@@ -86,11 +86,15 @@ async function requireMember(userId, coupleId) {
 }
 
 /** 回忆文档里的照片文件 ID（彻底删除时用）。 */
-function fileIDsOf(doc) {
+function fileIDsOf(doc, coupleId) {
   const photos = Array.isArray(doc && doc.photos) ? doc.photos : []
   return photos
     .map((photo) => photo && (photo.fileID || photo.src || photo.storagePath))
-    .filter((value) => typeof value === 'string' && value.startsWith('cloud://'))
+    .filter((value) => {
+      if (typeof value !== 'string') return false
+      const match = /^cloud:\/\/[A-Za-z0-9.-]+\/couple-photos\/([A-Za-z0-9_-]+)\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+\.[A-Za-z0-9]+$/.exec(value)
+      return match && match[1] === coupleId
+    })
 }
 
 async function deleteFiles(fileIDs) {
@@ -176,12 +180,12 @@ async function purgeEntry(id, coupleId, userId) {
         const response = await db.collection(collection).where({ coupleId }).skip(offset).limit(100).get()
         const docs = response.data || []
         for (const doc of docs) if (!(collection === 'trash' && doc._id === id)) {
-          for (const file of fileIDsOf(collection === 'trash' ? doc.doc : doc)) retained.add(file)
+          for (const file of fileIDsOf(collection === 'trash' ? doc.doc : doc, coupleId)) retained.add(file)
         }
         if (docs.length < 100) break
       }
     }
-    await deleteFiles(fileIDsOf(entry.doc).filter((file) => !retained.has(file)))
+    await deleteFiles(fileIDsOf(entry.doc, coupleId).filter((file) => !retained.has(file)))
   }
   await db.runTransaction(async (transaction) => {
     const current = await transactionEntry(transaction, coupleId, userId, id)

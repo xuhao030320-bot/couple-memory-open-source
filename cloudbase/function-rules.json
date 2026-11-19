@@ -1,0 +1,35 @@
+{
+  "*": {
+    "invoke": false
+  },
+  "webAuth": {
+    "invoke": true
+  },
+  "invitePair": {
+    "invoke": "auth.loginType != 'ANONYMOUS' && auth != null"
+  },
+  "joinCouple": {
+    "invoke": "auth.loginType != 'ANONYMOUS' && auth != null"
+  },
+  "getMyWorkspace": {
+    "invoke": "auth.loginType != 'ANONYMOUS' && auth != null"
+  },
+  "updateMyProfile": {
+    "invoke": "auth.loginType != 'ANONYMOUS' && auth != null"
+  },
+  "mediaAccess": {
+    "invoke": "auth.loginType != 'ANONYMOUS' && auth != null"
+  },
+  "messageAccess": {
+    "invoke": "auth.loginType != 'ANONYMOUS' && auth != null"
+  },
+  "dataAccess": {
+    "invoke": "auth.loginType != 'ANONYMOUS' && auth != null"
+  },
+  "trashAccess": {
+    "invoke": "auth.loginType != 'ANONYMOUS' && auth != null"
+  },
+  "aiAccess": {
+    "invoke": "auth.loginType != 'ANONYMOUS' && auth != null"
+  }
+}

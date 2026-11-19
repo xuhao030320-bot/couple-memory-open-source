@@ -11,6 +11,8 @@ describe('public build configuration', () => {
     ['VITE_CLOUDBASE_ACCESS_KEY', fixtureToken({ is_system_admin: true })],
     ['VITE_SUPABASE_ANON_KEY', fixtureToken({ role: 'service_role' })],
     ['VITE_SUPABASE_PUBLISHABLE_KEY', 'sb_secret_fixture'],
+    ['VITE_TCB_CUSTOM_LOGIN_KEY', 'test-backend-only'],
+    ['VITE_CLOUDBASE_PUBLISHABLE_KEY', Buffer.from(JSON.stringify({ private_key: 'unit-test' })).toString('base64')],
     ['VITE_DEEPSEEK_API_KEY', 'test-backend-only'],
   ])('stops privileged credentials in %s without printing their value', (name, value) => {
     const check = () => checkPublicEnv({ [name]: value })

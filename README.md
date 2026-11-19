@@ -17,9 +17,7 @@ npm run dev
 
 **Supabase** 提供邮箱登录、双人空间、私有媒体存储和实时同步。新建自己的项目，按初始化指南执行数据库迁移，再将项目 URL 与客户端 Publishable Key 写进本地 `.env.local`。两人分别注册，第一个账号创建空间，第二个账号通过邀请码加入。[Supabase 初始化指南](supabase/README.md)
 
-**CloudBase** 适用于已有兼容后端的部署。这里包含 Web 适配器和 `dataAccess`、`messageAccess`、`trashAccess` 三个云函数。登录、配对、读取空间、更新资料和媒体访问还需要自行提供 `webAuth`、`invitePair`、`joinCouple`、`getMyWorkspace`、`updateMyProfile`、`mediaAccess` 与配套的数据库、存储权限规则。启用 AI 时还需要 `aiAccess`。已有这些服务时，在 `.env.local` 里设置 `VITE_DATA_PROVIDER=cloudbase`、自己的环境 ID 和客户端 Publishable Key。[配置示例](.env.example) · [留言读取规则](cloudfunctions/messageAccess/README.md) · [CloudBase 密钥类型](https://docs.cloudbase.net/api-reference/webv3/api-key)
-
-部署这三个云函数时使用 Node.js 22.12 或更高版本，在各函数目录运行 `npm ci`。独立锁文件固定 SDK 及其 HTTP 客户端版本。
+**CloudBase** 支持从空环境部署整套网站。仓库包含网页版使用的全部 10 个云函数、文档数据库和云存储权限规则。两人用自己的邮箱注册，通过邀请码共享相册、愿望、纪念日和留言。AI 助手可按需启用。[CloudBase 自部署指南](cloudbase/README.md)
 
 ## 可选功能
 
@@ -30,6 +28,7 @@ npm run dev
 
 ```sh
 npm test
+npm ci --prefix cloudfunctions/webAuth
 npm run test:cloudbase
 npm run build
 npm run preview

@@ -5,14 +5,14 @@
   "engines": {
     "node": ">=22.12.0"
   },
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:cloudbase": "node --test cloudfunctions/tests/partnerNotes.test.cjs cloudfunctions/tests/trash-and-retry.test.cjs cloudfunctions/messageAccess/test.js"
+    "test:cloudbase": "node --test cloudfunctions/tests/*.test.cjs cloudfunctions/messageAccess/test.js"
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",

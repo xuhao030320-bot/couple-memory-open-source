@@ -1,0 +1,175 @@
+{
+  "functionRoot": "./cloudfunctions",
+  "functions": [
+    {
+      "name": "webAuth",
+      "runtime": "Nodejs22.21",
+      "handler": "index.main",
+      "timeout": 60,
+      "installDependency": true,
+      "ignore": [
+        "node_modules",
+        ".env*",
+        "*.pem",
+        "*.key",
+        "tcb_custom_login*.json",
+        "test.js",
+        "*.test.js",
+        "README.md"
+      ]
+    },
+    {
+      "name": "invitePair",
+      "runtime": "Nodejs22.21",
+      "handler": "index.main",
+      "timeout": 60,
+      "installDependency": true,
+      "ignore": [
+        "node_modules",
+        ".env*",
+        "*.pem",
+        "*.key",
+        "tcb_custom_login*.json",
+        "test.js",
+        "*.test.js",
+        "README.md"
+      ]
+    },
+    {
+      "name": "joinCouple",
+      "runtime": "Nodejs22.21",
+      "handler": "index.main",
+      "timeout": 60,
+      "installDependency": true,
+      "ignore": [
+        "node_modules",
+        ".env*",
+        "*.pem",
+        "*.key",
+        "tcb_custom_login*.json",
+        "test.js",
+        "*.test.js",
+        "README.md"
+      ]
+    },
+    {
+      "name": "getMyWorkspace",
+      "runtime": "Nodejs22.21",
+      "handler": "index.main",
+      "timeout": 60,
+      "installDependency": true,
+      "ignore": [
+        "node_modules",
+        ".env*",
+        "*.pem",
+        "*.key",
+        "tcb_custom_login*.json",
+        "test.js",
+        "*.test.js",
+        "README.md"
+      ]
+    },
+    {
+      "name": "updateMyProfile",
+      "runtime": "Nodejs22.21",
+      "handler": "index.main",
+      "timeout": 60,
+      "installDependency": true,
+      "ignore": [
+        "node_modules",
+        ".env*",
+        "*.pem",
+        "*.key",
+        "tcb_custom_login*.json",
+        "test.js",
+        "*.test.js",
+        "README.md"
+      ]
+    },
+    {
+      "name": "mediaAccess",
+      "runtime": "Nodejs22.21",
+      "handler": "index.main",
+      "timeout": 60,
+      "installDependency": true,
+      "ignore": [
+        "node_modules",
+        ".env*",
+        "*.pem",
+        "*.key",
+        "tcb_custom_login*.json",
+        "test.js",
+        "*.test.js",
+        "README.md"
+      ]
+    },
+    {
+      "name": "messageAccess",
+      "runtime": "Nodejs22.21",
+      "handler": "index.main",
+      "timeout": 60,
+      "installDependency": true,
+      "ignore": [
+        "node_modules",
+        ".env*",
+        "*.pem",
+        "*.key",
+        "tcb_custom_login*.json",
+        "test.js",
+        "*.test.js",
+        "README.md"
+      ]
+    },
+    {
+      "name": "dataAccess",
+      "runtime": "Nodejs22.21",
+      "handler": "index.main",
+      "timeout": 60,
+      "installDependency": true,
+      "ignore": [
+        "node_modules",
+        ".env*",
+        "*.pem",
+        "*.key",
+        "tcb_custom_login*.json",
+        "test.js",
+        "*.test.js",
+        "README.md"
+      ]
+    },
+    {
+      "name": "trashAccess",
+      "runtime": "Nodejs22.21",
+      "handler": "index.main",
+      "timeout": 60,
+      "installDependency": true,
+      "ignore": [
+        "node_modules",
+        ".env*",
+        "*.pem",
+        "*.key",
+        "tcb_custom_login*.json",
+        "test.js",
+        "*.test.js",
+        "README.md"
+      ]
+    },
+    {
+      "name": "aiAccess",
+      "runtime": "Nodejs22.21",
+      "handler": "index.main",
+      "timeout": 60,
+      "installDependency": true,
+      "ignore": [
+        "node_modules",
+        ".env*",
+        "*.pem",
+        "*.key",
+        "tcb_custom_login*.json",
+        "test.js",
+        "*.test.js",
+        "README.md"
+      ]
+    }
+  ]
+}

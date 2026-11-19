@@ -111,7 +111,7 @@ test('hidden recent messages do not displace an older visible archive from the l
   assert.equal(result.items[0].title,'visible')
 })
 test('file deletion failure leaves a nonrestorable archive for safe retry',async()=>{
-  const item=archived('memory',{photos:[{fileID:'cloud://original'}]})
+  const item=archived('memory',{photos:[{fileID:'cloud://example.bucket/couple-photos/space001/memory/original.jpg'}]})
   const options={failFiles:true}
   const app=service('trashAccess',{trash:{[item._id]:item}},options)
   assert.equal((await app.call('purge',{trashId:item._id})).ok,false)
@@ -123,11 +123,11 @@ test('file deletion failure leaves a nonrestorable archive for safe retry',async
   assert.equal((await app.call('purge',{trashId:item._id})).ok,true)
 })
 test('purge retains files referenced by a live memory or a second archive',async()=>{
-  const item=archived('memory',{photos:[{fileID:'cloud://live'},{fileID:'cloud://archived'},{fileID:'cloud://unused'}]})
-  const other=archived('memory',{photos:[{fileID:'cloud://archived'}]},{_id:'memory_other',originalId:'other'})
-  const app=service('trashAccess',{trash:{[item._id]:item,[other._id]:other},memories:{live:{_id:'live',coupleId:'space001',photos:[{fileID:'cloud://live'}]}}})
+  const item=archived('memory',{photos:[{fileID:'cloud://example.bucket/couple-photos/space001/memory/live.jpg'},{fileID:'cloud://example.bucket/couple-photos/space001/memory/archived.jpg'},{fileID:'cloud://example.bucket/couple-photos/space001/memory/unused.jpg'},{fileID:'cloud://example.bucket/couple-photos/other/memory/untouched.jpg'}]})
+  const other=archived('memory',{photos:[{fileID:'cloud://example.bucket/couple-photos/space001/memory/archived.jpg'}]},{_id:'memory_other',originalId:'other'})
+  const app=service('trashAccess',{trash:{[item._id]:item,[other._id]:other},memories:{live:{_id:'live',coupleId:'space001',photos:[{fileID:'cloud://example.bucket/couple-photos/space001/memory/live.jpg'}]}}})
   assert.equal((await app.call('purge',{trashId:item._id})).ok,true)
-  assert.deepEqual(app.removedFiles,[['cloud://unused']])
+  assert.deepEqual(app.removedFiles,[['cloud://example.bucket/couple-photos/space001/memory/unused.jpg']])
 })
 test('message and reply retries are idempotent, conflicting content is rejected, and deletion cannot be resurrected',async()=>{
   const app=service('messageAccess')
@@ -166,4 +166,15 @@ test('concurrent replies preserve both and recipients cannot reply to locked mes
   const results=await Promise.all(['reply-one','reply-two'].map(replyId=>app.call('reply',{messageId:'message1',replyId,text:replyId})))
   assert.ok(results.every(result=>result.ok))
   assert.equal(app.tables.messages.message1.replies.length,2)
+})
+
+test('client-selected record IDs remain scoped to their space', async () => {
+  const row = { _id: 'item', coupleId: 'another-space', text: 'unchanged' }
+  const app = service('dataAccess', { memories: { item: row }, wishes: { item: row } })
+  const memory = await app.call('putMemory', { memoryId: 'item', doc: { title: 'test' } })
+  assert.equal(memory.code, 'NOT_FOUND')
+  const update = await app.call('syncWishes', { updated: [{ id: 'item', patch: { text: 'test' } }] })
+  assert.equal(update.code, 'NOT_FOUND')
+  assert.deepEqual(app.tables.memories.item, row)
+  assert.deepEqual(app.tables.wishes.item, row)
 })

@@ -19,3 +19,6 @@ qa/
 supabase/.temp/
 supabase/.branches/
 .DS_Store
+tcb_custom_login*.json
+.cloudbase/
+.cloudbase-backup/

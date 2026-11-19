@@ -1,0 +1,50 @@
+{
+  "couples": {
+    "read": "auth.uid in get(`database.couples.${doc._id}`).memberIds || auth.openid in get(`database.couples.${doc._id}`).memberIds",
+    "write": false
+  },
+  "couple_members": {
+    "read": "auth.uid in get(`database.couples.${doc.coupleId}`).memberIds || auth.openid in get(`database.couples.${doc.coupleId}`).memberIds",
+    "write": false
+  },
+  "memories": {
+    "read": "auth.uid in get(`database.couples.${doc.coupleId}`).memberIds || auth.openid in get(`database.couples.${doc.coupleId}`).memberIds",
+    "write": false
+  },
+  "wishes": {
+    "read": "auth.uid in get(`database.couples.${doc.coupleId}`).memberIds || auth.openid in get(`database.couples.${doc.coupleId}`).memberIds",
+    "write": false
+  },
+  "anniversaries": {
+    "read": "auth.uid in get(`database.couples.${doc.coupleId}`).memberIds || auth.openid in get(`database.couples.${doc.coupleId}`).memberIds",
+    "write": false
+  },
+  "couple_notes": {
+    "read": "auth.uid in get(`database.couples.${doc.coupleId}`).memberIds || auth.openid in get(`database.couples.${doc.coupleId}`).memberIds",
+    "write": false
+  },
+  "partner_notes": {
+    "read": "auth.uid in get(`database.couples.${doc.coupleId}`).memberIds || auth.openid in get(`database.couples.${doc.coupleId}`).memberIds",
+    "write": false
+  },
+  "messages": {
+    "read": false,
+    "write": false
+  },
+  "message_receipts": {
+    "read": false,
+    "write": false
+  },
+  "users": {
+    "read": false,
+    "write": false
+  },
+  "trash": {
+    "read": false,
+    "write": false
+  },
+  "hotel_reviews": {
+    "read": false,
+    "write": false
+  }
+}

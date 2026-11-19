@@ -149,11 +149,24 @@ async function removeStoredEntry(kind, collection, id, coupleId, userId) {
   })
 }
 
+// 文档 ID 来自客户端。创建、覆盖、局部更新都在同一事务内检查空间归属。
+async function writeScopedDocument(collection, id, coupleId, fields, updateOnly = false) {
+  return db.runTransaction(async (tx) => {
+    const ref = tx.collection(collection).doc(id)
+    const existing = docData(await ref.get())
+    if ((existing && existing.coupleId !== coupleId) || (updateOnly && !existing)) {
+      throw new AccessError('NOT_FOUND', '没有找到这条内容')
+    }
+    if (updateOnly) await ref.update(fields)
+    else await ref.set({ ...fields, coupleId })
+  })
+}
+
 async function putMemory(event, coupleId) {
   const memoryId = requiredId(event.memoryId, '回忆 ID')
   const doc = sanitizeDoc(event.doc)
   requiredText(doc.title, '标题', 60)
-  await db.collection('memories').doc(memoryId).set({ ...doc, coupleId })
+  await writeScopedDocument('memories', memoryId, coupleId, doc)
 }
 
 async function removeMemory(event, coupleId, userId) {
@@ -165,19 +178,14 @@ async function createAnniversary(event, coupleId) {
   const anniversaryId = requiredId(event.anniversaryId, '纪念日 ID')
   const doc = sanitizeDoc(event.doc)
   requiredText(doc.title, '标题', 60)
-  await db.collection('anniversaries').doc(anniversaryId).set({ ...doc, coupleId })
+  await writeScopedDocument('anniversaries', anniversaryId, coupleId, doc)
 }
 
 async function updateAnniversary(event, coupleId) {
   const anniversaryId = requiredId(event.anniversaryId, '纪念日 ID')
   const patch = sanitizeDoc(event.patch)
   if (patch.title !== undefined) requiredText(patch.title, '标题', 60)
-  const existing = await db.collection('anniversaries').doc(anniversaryId).get().catch(() => null)
-  const anniversary = docData(existing)
-  if (!anniversary || String(anniversary.coupleId || '') !== coupleId) {
-    throw new AccessError('NOT_FOUND', '没有找到这个纪念日')
-  }
-  await db.collection('anniversaries').doc(anniversaryId).update(patch)
+  await writeScopedDocument('anniversaries', anniversaryId, coupleId, patch, true)
 }
 
 async function removeAnniversary(event, coupleId, userId) {
@@ -197,13 +205,13 @@ async function syncWishes(event, coupleId, userId) {
     const wishId = requiredId(item && item.id, '愿望 ID')
     const doc = sanitizeDoc(item.doc || item)
     requiredText(doc.text, '愿望内容')
-    await db.collection('wishes').doc(wishId).set({ ...doc, coupleId })
+    await writeScopedDocument('wishes', wishId, coupleId, doc)
   }
   for (const item of updated) {
     const wishId = requiredId(item && item.id, '愿望 ID')
     const patch = sanitizeDoc(item && item.patch)
     if (patch.text !== undefined) requiredText(patch.text, '愿望内容')
-    await db.collection('wishes').doc(wishId).update(patch)
+    await writeScopedDocument('wishes', wishId, coupleId, patch, true)
   }
   for (const id of removed) {
     const wishId = requiredId(id, '愿望 ID')
@@ -384,7 +392,7 @@ async function syncHotelReviews(event, coupleId, userId) {
   for (const item of created) {
     const reviewId = requiredId(item && item.id, '酒店测评 ID')
     const doc = hotelDoc(item && item.doc)
-    await db.collection('hotel_reviews').doc(reviewId).set({ ...doc, coupleId, createdBy: userId })
+    await writeScopedDocument('hotel_reviews', reviewId, coupleId, { ...doc, createdBy: userId })
   }
   for (const item of updated) {
     const reviewId = requiredId(item && item.id, '酒店测评 ID')
@@ -395,13 +403,13 @@ async function syncHotelReviews(event, coupleId, userId) {
     }
     const patch = hotelDoc({ ...(current || {}), ...(item && item.patch) })
     delete patch.createdAt
-    await db.collection('hotel_reviews').doc(reviewId).update(patch)
+    await writeScopedDocument('hotel_reviews', reviewId, coupleId, patch, true)
   }
   for (const id of removed) {
     const reviewId = requiredId(id, '酒店测评 ID')
     const existing = await db.collection('hotel_reviews').doc(reviewId).get().catch(() => null)
     const review = docData(existing)
-    if (review && String(review.coupleId || '') === coupleId) await db.collection('hotel_reviews').doc(reviewId).remove()
+    if (review?.coupleId === coupleId) await db.collection('hotel_reviews').where({ _id: reviewId, coupleId }).remove()
   }
 }
 
